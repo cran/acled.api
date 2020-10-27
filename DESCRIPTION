@@ -1,7 +1,7 @@
 Package: acled.api
 Title: Automated Retrieval of ACLED Conflict Event Data
-Version: 1.0.7
-Date: 2020-10-14
+Version: 1.0.8
+Date: 2020-10-27
 Authors@R: 
     person(given = "Christoph",
            family = "Dworschak",
@@ -20,6 +20,6 @@ RoxygenNote: 7.1.1
 Imports: httr, jsonlite
 Suggests: testthat
 NeedsCompilation: no
-Packaged: 2020-10-15 12:35:11 UTC; root
+Packaged: 2020-10-27 12:39:23 UTC; root
 Repository: CRAN
-Date/Publication: 2020-10-24 08:40:02 UTC
+Date/Publication: 2020-10-27 13:50:02 UTC

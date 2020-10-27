@@ -5,6 +5,8 @@
 \title{Automated Retrieval of ACLED Conflict Event Data}
 \usage{
 acled.api(
+  email.address = Sys.getenv("EMAIL_ADDRESS"),
+  access.key = Sys.getenv("ACCESS_KEY"),
   country = NULL,
   region = NULL,
   start.date = NULL,
@@ -16,6 +18,13 @@ acled.api(
 )
 }
 \arguments{
+\item{email.address}{character string. Supply the email address that you registered with \href{https://developer.acleddata.com/}{ACLED access}.
+The email address can also be set as an environment variable using \emph{\code{Sys.setenv(EMAIL_ADDRESS="your.email.address")}}, in
+which case this argument can be skipped.}
+
+\item{access.key}{character string. Supply your ACLED access key. The  access key can also be set as an environment variable
+using \emph{\code{Sys.setenv(ACCESS_KEY="your.access.key")}}, in which case this argument can be skipped.}
+
 \item{country}{character vector. Supply one or more country names to narrow down which events should be retrieved. See the details
 below for information on how the arguments "country" and "region" interact.}
 
@@ -61,6 +70,9 @@ Internally it uses \emph{\code{httr}} to access the API, and \emph{\code{jsonlit
 are converted into the base class \emph{\code{data.frame}}. Variables are of class \emph{\code{character}} by default.
 Variables which only contain numbers as recognized by the regular
 expression \verb{^[0-9]+$} are coerced into \emph{\code{numeric}} before the \emph{\code{data.frame}} object is returned. \cr \cr
+The user's registered email address and ACLED access key can be supplied as strings directly to their respective arguments,
+or set in advance as environment variables
+using \emph{\code{Sys.setenv(EMAIL_ADDRESS="your.email.address")}} and  \emph{\code{Sys.setenv(ACCESS_KEY="your.access.key")}}. \cr \cr
 If both the country argument and the region argument are NULL (default), all available countries are retrieved. The same applies to
 the time frame when both the start date and the end date are NULL (default). Note that the API cannot handle requests with only one
 of the dates specified (either none of them or both of them need to be supplied). \cr \cr
@@ -69,16 +81,24 @@ country "Togo" and the region "Southern Africa" leads the API to query for a cou
 In this case, no data will be returned as no events match this query.
 }
 \examples{
-my.data.frame1 <- acled.api(region = c(1,7),
-start.date = "2018-11-01",
-end.date = "2018-11-31")
+\dontrun{
+# Email and access key provided as strings:
+my.data.frame1 <- acled.api(email.address = "your.email.address",
+  access.key = "your.access.key",
+  region = c(1,7),
+  start.date = "2018-11-01",
+  end.date = "2018-11-31")
 head(my.data.frame1)
 
-my.data.frame2 <- acled.api(region = c(1,7),
-start.date = "2018-11-01",
-end.date = "2018-11-31",
-add.variables = c("geo_precision", "time_precision"))
+# Email and access key provided as environment variables:
+my.data.frame2 <- acled.api(email.address = Sys.getenv("EMAIL_ADDRESS"),
+  access.key = Sys.getenv("ACCESS_KEY"),
+  region = c(1,7),
+  start.date = "2018-11-01",
+  end.date = "2018-11-31",
+  add.variables = c("geo_precision", "time_precision"))
 sd(my.data.frame2$geo_precision)
+}
 }
 \references{
 Armed Conflict Location & Event Data Project (ACLED); \url{https://acleddata.com/} \cr

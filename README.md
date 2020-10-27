@@ -6,11 +6,12 @@
 <!-- badges: start -->
 
 [![CRAN
-status](https://www.r-pkg.org/badges/version/acled.api)](https://CRAN.R-project.org/package=acled.api)
+status](https://www.r-pkg.org/badges/version-last-release/acled.api)](https://CRAN.R-project.org/package=acled.api)
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![Travis build
 status](https://travis-ci.com/chris-dworschak/acled.api.svg?branch=master)](https://travis-ci.com/chris-dworschak/acled.api)
-[![Lifecycle:
-maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![CRANlogs](http://cranlogs.r-pkg.org/badges/grand-total/acled.api)](https://CRAN.R-project.org/package=acled.api)
 <!-- badges: end -->
 
 This small package provides functionality to access and manage the
@@ -26,7 +27,7 @@ requirements.
 
 ## Installation
 
-You can install the released version of acled.api from
+You can install the latest release version of acled.api from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
@@ -50,18 +51,23 @@ between June 2019 and July 2020, you can supply:
 ``` r
 library(acled.api) # loads the package
 #> 
-#> By using this package, you acknowledge that you have read ACLED's terms
-#> and conditions. The data must be cited as per ACLED attribution requirements.
+#> By using this package, you acknowledge that you have read ACLED's terms and
+#> conditions. The data must be cited as per ACLED attribution requirements. To
+#> download ACLED data, you require an ACLED access key. You can request your key
+#> by freely registering with ACLED on https://developer.acleddata.com/.
 #> The package may be cited as:
 #> Dworschak, Christoph. 2020. "Acled.api: Automated Retrieval of ACLED Conflict
-#> Event Data." R package version 1.0.2. <https://github.com/chris-dworschak/acled.api/>
+#> Event Data." R package. CRAN version 1.0.8.
+#> For the development version of this package, visit <https://github.com/chris-dworschak/acled.api/>
 
 my.data.frame <- acled.api( # stores an ACLED sample in object my.data.frame
+  email.address = Sys.getenv("EMAIL_ADDRESS"),
+  access.key = Sys.getenv("ACCESS_KEY"),
   region = c("Southern Asia", "Central America"), 
   start.date = "2019-06-01", 
   end.date = "2020-07-31")
-#> Your ACLED data request was successful.
-#>                  Events were retrieved for the period starting 2019-06-01 until 2020-07-31.
+#> Your ACLED data request was successful. 
+#> Events were retrieved for the period starting 2019-06-01 until 2020-07-31.
 
 head(my.data.frame) # returns the first five observations of the ACLED sample
 #>                      region     country year event_date

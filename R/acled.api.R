@@ -7,6 +7,11 @@
 #' the research work flow. \cr \cr
 #' When using this package, you acknowledge that you have read ACLED's terms and
 #' conditions of use, and that you agree with their attribution requirements.
+#' @param email.address character string. Supply the email address that you registered with [ACLED access](https://developer.acleddata.com/).
+#' The email address can also be set as an environment variable using _`Sys.setenv(EMAIL_ADDRESS="your.email.address")`_, in
+#' which case this argument can be skipped.
+#' @param access.key character string. Supply your ACLED access key. The  access key can also be set as an environment variable
+#' using _`Sys.setenv(ACCESS_KEY="your.access.key")`_, in which case this argument can be skipped.
 #' @param country character vector. Supply one or more country names to narrow down which events should be retrieved. See the details
 #' below for information on how the arguments "country" and "region" interact.
 #' @param region numeric or character vector. Supply one or more region codes (numeric) or region names (character)
@@ -31,6 +36,9 @@
 #' are converted into the base class _`data.frame`_. Variables are of class _`character`_ by default.
 #' Variables which only contain numbers as recognized by the regular
 #' expression `^[0-9]+$` are coerced into _`numeric`_ before the _`data.frame`_ object is returned. \cr \cr
+#' The user's registered email address and ACLED access key can be supplied as strings directly to their respective arguments,
+#' or set in advance as environment variables
+#' using _`Sys.setenv(EMAIL_ADDRESS="your.email.address")`_ and  _`Sys.setenv(ACCESS_KEY="your.access.key")`_. \cr \cr
 #' If both the country argument and the region argument are NULL (default), all available countries are retrieved. The same applies to
 #' the time frame when both the start date and the end date are NULL (default). Note that the API cannot handle requests with only one
 #' of the dates specified (either none of them or both of them need to be supplied). \cr \cr
@@ -45,19 +53,29 @@
 #' Clionadh Raleigh, Andrew Linke, Havard Hegre and Joakim Karlsen. 2010.
 #' "Introducing ACLED-Armed Conflict Location and Event Data." _Journal of Peace Research_ 47 (5): 651-660.
 #' @examples
-#' my.data.frame1 <- acled.api(region = c(1,7),
-#' start.date = "2018-11-01",
-#' end.date = "2018-11-31")
+#' \dontrun{
+#' # Email and access key provided as strings:
+#' my.data.frame1 <- acled.api(email.address = "your.email.address",
+#'   access.key = "your.access.key",
+#'   region = c(1,7),
+#'   start.date = "2018-11-01",
+#'   end.date = "2018-11-31")
 #' head(my.data.frame1)
 #'
-#' my.data.frame2 <- acled.api(region = c(1,7),
-#' start.date = "2018-11-01",
-#' end.date = "2018-11-31",
-#' add.variables = c("geo_precision", "time_precision"))
+#' # Email and access key provided as environment variables:
+#' my.data.frame2 <- acled.api(email.address = Sys.getenv("EMAIL_ADDRESS"),
+#'   access.key = Sys.getenv("ACCESS_KEY"),
+#'   region = c(1,7),
+#'   start.date = "2018-11-01",
+#'   end.date = "2018-11-31",
+#'   add.variables = c("geo_precision", "time_precision"))
 #' sd(my.data.frame2$geo_precision)
+#' }
 #' @export
 #'
 acled.api <- function(
+  email.address = Sys.getenv("EMAIL_ADDRESS"),
+  access.key = Sys.getenv("ACCESS_KEY"),
   country = NULL,
   region = NULL,
   start.date = NULL,
@@ -67,8 +85,23 @@ acled.api <- function(
   dyadic = FALSE,
   other.query = NULL){
 
-  # accept terms
-  terms <- "read?terms=accept&limit=0"
+
+  # access key
+  if ( (is.null(access.key) | !is.character(access.key) | access.key=="") == TRUE ) {
+    stop('ACLED requires an access key, which needs to be supplied to this argument as a character string.
+    You can request an access key by registering on https://developer.acleddata.com/.', call. = FALSE)
+  }
+  if( (is.character(access.key) & access.key!="") == TRUE){
+  access.key1 <- paste0("key=", access.key)}
+
+  # email address
+  if ( (is.null(email.address) | !is.character(email.address) | email.address=="") == TRUE ) {
+    stop('ACLED requires an email address for access, which needs to be supplied to this argument as a character string.
+    Use the email address you provided when registering on https://developer.acleddata.com/.', call. = FALSE)
+  }
+  if( (is.character(email.address) & email.address!="") == TRUE){
+  email.address1 <- paste0("&email=", email.address)}
+
 
   # country argument
   if ( (!is.null(country) & !is.character(country)) == TRUE ) {
@@ -154,25 +187,42 @@ acled.api <- function(
   other.query1 <- ifelse( is.null(other.query)==TRUE, "", paste0("&", paste(other.query, collapse = "&")) )
 
 
-  # GET call
-  url <- paste0("https://api.acleddata.com/acled/", terms, dyadic1, time.frame1, variables, country1, region1, other.query1)
-  response <- httr::GET(url)
+  # ACLED ping
+  acled.url.ping <- tryCatch(
+    httr::GET("https://api.acleddata.com/"),
+    error = function(e) e )
+  if( any(class(acled.url.ping) == "error") ) {
+    message("The resource api.acleddata.com cannot be reached. \n
+    1. Please check your internet connection.
+    2. If the internet connection is reliable, the server may be temporarily unavailable; in this case please try again later.
+    3. If the problem persists, please contact the package maintainer as the resource may have moved.")
+    return(NULL)
+  }
 
+
+  # GET call
+  url <- paste0("https://api.acleddata.com/acled/read/?",
+                access.key1, email.address1, "&limit=0", dyadic1, time.frame1, variables, country1, region1, other.query1)
+
+  response <- httr::GET(url)
   if ( exists("response")==FALSE ) {
-    stop("GET request was unsuccessful. Check your internet connection. If the problem persists despite a reliable internet connection,
-    the server may be temporarily not reachable; in this case try again later.",
+    message("GET request was unsuccessful. Please check your internet connection. If the problem persists despite a reliable internet connection,
+    the server may be temporarily not available; in this case try again later.",
     call. = FALSE)
+    return(NULL)
   }
   if (httr::http_type(response) != "application/json") {
-    stop(paste0("GET request was unsuccessful: the API did not return a JSON file, giving the status code ",
+    message(paste0("GET request was unsuccessful: the API did not return a JSON file, giving the status code ",
                 response$status_code, "."), call. = FALSE)
+    return(NULL)
   }
 
   # JSON
   json.content <- jsonlite::fromJSON( httr::content(response, "text", encoding = 'UTF-8'),
                             simplifyVector = FALSE)
   if(!json.content$success){
-    stop(paste0("GET request wasn't successful: ", json.content$error$message))
+    message(paste0("GET request wasn't successful. The API returned status ", json.content$error$status, ": ", json.content$error$message, "."))
+    return(NULL)
   }
   json.content <- json.content$data
 
@@ -195,8 +245,7 @@ acled.api <- function(
       acled.data[,i] <- as.numeric(acled.data[,i])}
   }
 
-  message(paste0("Your ACLED data request was successful.
-                 Events were retrieved for the period starting ",
+  message(paste0("Your ACLED data request was successful. \nEvents were retrieved for the period starting ",
                     range(acled.data$event_date)[1], " until ", range(acled.data$event_date)[2], "."))
 
   acled.data
