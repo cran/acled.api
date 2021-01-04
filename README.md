@@ -69,33 +69,53 @@ my.data.frame <- acled.api( # stores an ACLED sample in object my.data.frame
 #> Your ACLED data request was successful. 
 #> Events were retrieved for the period starting 2019-06-01 until 2020-07-31.
 
-head(my.data.frame) # returns the first five observations of the ACLED sample
+my.data.frame[1:3,] # returns the first three observations of the ACLED sample
 #>                      region     country year event_date
-#> 1 Caucasus and Central Asia  Azerbaijan 2020 2020-07-31
-#> 2 Caucasus and Central Asia Afghanistan 2020 2020-07-31
-#> 3 Caucasus and Central Asia  Azerbaijan 2020 2020-07-31
-#> 4 Caucasus and Central Asia  Azerbaijan 2020 2020-07-31
-#> 5 Caucasus and Central Asia  Azerbaijan 2020 2020-07-31
-#> 6 Caucasus and Central Asia  Azerbaijan 2020 2020-07-31
-#>                              source   admin1 admin2 admin3
-#> 1 Ministry of Defence of Azerbaijan Jabrayil              
-#> 2  Afghan Islamic Press News Agency  Helmand Sangin       
-#> 3 Ministry of Defence of Azerbaijan    Tovuz              
-#> 4 Ministry of Defence of Azerbaijan   Fizuli              
-#> 5 Ministry of Defence of Azerbaijan  Martuni              
-#> 6 Ministry of Defence of Azerbaijan   Fizuli              
-#>                         location                 event_type sub_event_type
-#> 1              Chodjuk-Mardjanli                    Battles    Armed clash
-#> 2                         Sangin Violence against civilians         Attack
-#> 3                         Aghdam                    Battles    Armed clash
-#> 4                        Alxanli                    Battles    Armed clash
-#> 5                Ashaghi Veysali                    Battles    Armed clash
-#> 6 Nameless Hills (Fizuli Region)                    Battles    Armed clash
-#>   interaction fatalities
-#> 1          11          0
-#> 2          37          1
-#> 3          18          0
-#> 4          11          0
-#> 5          11          0
-#> 6          11          0
+#> 1 Caucasus and Central Asia Afghanistan 2020 2020-07-31
+#> 2 Caucasus and Central Asia  Azerbaijan 2020 2020-07-31
+#> 3 Caucasus and Central Asia Afghanistan 2020 2020-07-31
+#>                              source   admin1 admin2 admin3          location
+#> 1  Afghan Islamic Press News Agency   Ghazni  Andar                    Miray
+#> 2 Ministry of Defence of Azerbaijan Jabrayil               Chodjuk-Mardjanli
+#> 3  Afghan Islamic Press News Agency  Helmand Sangin                   Sangin
+#>                   event_type               sub_event_type interaction
+#> 1     Strategic developments Looting/property destruction          37
+#> 2                    Battles                  Armed clash          11
+#> 3 Violence against civilians                       Attack          37
+#>   fatalities
+#> 1          0
+#> 2          0
+#> 3          1
 ```
+
+## A note on replicability
+
+Some tasks, like real-time analyses and continuously updated forecasting
+models (e.g., as used by practitioners), may not require replicability
+of results. However, most research-related tasks assume the possibility
+of replication at a later stage (e.g., analyses of which the results are
+intended for publication, or a data project taking multiple days where a
+change to the underlying sample is not desirable). After the release of
+versions 1 through 8, ACLED changed their update system to allow for
+real-time amendments and post-release corrections, thereby forgoing
+traditional data versioning. This change requires researchers to take
+additional steps in order to ensure the replicability of their results
+when using ACLED data.
+
+Importantly, downloaded data intended for replicable use must be
+permanently stored by the analyst. Data downloaded through `acled.api()`
+are only stored temporarily in the working space, and may be lost after
+closing R. Therefore, if replicability is important to the analyst’s
+task, a call through `acled.api()` should occur only once at the
+beginning of the data project, immediately followed by, e.g.,
+`saveRDS(downloaded.data, file = "my_acled_data.rds")`. This locally
+stored data file can then be used again at a later point by calling
+`readRDS(file = "my_acled_data.rds")`, and ensures that the analysis
+sample stays constant over time.
+
+ACLED provides a time stamp for each individual observation, enabling
+researchers to do “micro versioning” of data points if necessary, and to
+verify congruence across samples. For this it is important that
+researchers do not drop the variable *timestamp* during the data
+management process. Starting version 1.0.9 the function `acled.api()`
+includes the *timestamp* variable in its default API call.
