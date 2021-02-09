@@ -6,20 +6,21 @@
 <!-- badges: start -->
 
 [![CRAN
-status](https://www.r-pkg.org/badges/version-last-release/acled.api)](https://CRAN.R-project.org/package=acled.api)
+status](https://www.r-pkg.org/badges/version-last-release/acled.api)](https://CRAN.R-project.org/package=acled.api/)
 [![Lifecycle:
-stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable/)
 [![Travis build
-status](https://travis-ci.com/chris-dworschak/acled.api.svg?branch=master)](https://travis-ci.com/chris-dworschak/acled.api)
-[![CRANlogs](http://cranlogs.r-pkg.org/badges/grand-total/acled.api)](https://CRAN.R-project.org/package=acled.api)
+status](https://travis-ci.com/chris-dworschak/acled.api.svg?branch=master)](https://travis-ci.com/gitlab/chris-dworschak/acled.api/)
+[![CRANlogs](http://cranlogs.r-pkg.org/badges/grand-total/acled.api)](https://CRAN.R-project.org/package=acled.api/)
 <!-- badges: end -->
 
 This small package provides functionality to access and manage the
 application programming interface (API) of the [Armed Conflict Location
-& Event Data Project (ACLED)](https://acleddata.com/). The function
-`acled.api()` makes it easy to retrieve a user-defined sample (or all of
-the available data) of ACLED, enabling a seamless integration of regular
-data updates into the research work flow.
+& Event Data Project (ACLED)](https://acleddata.com/), while requiring a
+minimal number of dependencies. The function `acled.api()` makes it easy
+to retrieve a user-defined sample (or all of the available data) of
+ACLED, enabling a seamless integration of regular data updates into the
+research work flow.
 
 When using this package, you acknowledge that you have read ACLED’s
 terms and conditions of use, and that you agree with their attribution
@@ -28,18 +29,17 @@ requirements.
 ## Installation
 
 You can install the latest release version of acled.api from
-[CRAN](https://CRAN.R-project.org) with:
+[CRAN](https://CRAN.R-project.org/package=acled.api/) with:
 
 ``` r
-install.packages("acled.api")
+install.packages("acled.api") # downloads and installs the package from CRAN
 ```
 
 You can install the development version from
-[GitHub](https://github.com/) with:
+[GitLab](https://gitlab.com/chris-dworschak/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("chris-dworschak/acled.api") # downloads and installs the package
+remotes::install_gitlab("chris-dworschak/acled.api") # downloads and installs the package from GitLab
 ```
 
 ## Example
@@ -57,8 +57,8 @@ library(acled.api) # loads the package
 #> by freely registering with ACLED on https://developer.acleddata.com/.
 #> The package may be cited as:
 #> Dworschak, Christoph. 2020. "Acled.api: Automated Retrieval of ACLED Conflict
-#> Event Data." R package. CRAN version 1.0.8.
-#> For the development version of this package, visit <https://github.com/chris-dworschak/acled.api/>
+#> Event Data." R package. CRAN version 1.1.0.
+#> For the development version of this package, visit <https://gitlab.com/chris-dworschak/acled.api/>
 
 my.data.frame <- acled.api( # stores an ACLED sample in object my.data.frame
   email.address = Sys.getenv("EMAIL_ADDRESS"),
@@ -82,10 +82,10 @@ my.data.frame[1:3,] # returns the first three observations of the ACLED sample
 #> 1     Strategic developments Looting/property destruction          37
 #> 2                    Battles                  Armed clash          11
 #> 3 Violence against civilians                       Attack          37
-#>   fatalities
-#> 1          0
-#> 2          0
-#> 3          1
+#>   fatalities  timestamp
+#> 1          0 1607974383
+#> 2          0 1596473349
+#> 3          1 1599503174
 ```
 
 ## A note on replicability
