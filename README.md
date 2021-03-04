@@ -11,6 +11,8 @@ status](https://www.r-pkg.org/badges/version-last-release/acled.api)](https://CR
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable/)
 [![Travis build
 status](https://travis-ci.com/chris-dworschak/acled.api.svg?branch=master)](https://travis-ci.com/gitlab/chris-dworschak/acled.api/)
+[![License: CC BY-NC
+4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![CRANlogs](http://cranlogs.r-pkg.org/badges/grand-total/acled.api)](https://CRAN.R-project.org/package=acled.api/)
 <!-- badges: end -->
 
@@ -57,7 +59,7 @@ library(acled.api) # loads the package
 #> by freely registering with ACLED on https://developer.acleddata.com/.
 #> The package may be cited as:
 #> Dworschak, Christoph. 2020. "Acled.api: Automated Retrieval of ACLED Conflict
-#> Event Data." R package. CRAN version 1.1.0.
+#> Event Data." R package. CRAN version 1.1.2.
 #> For the development version of this package, visit <https://gitlab.com/chris-dworschak/acled.api/>
 
 my.data.frame <- acled.api( # stores an ACLED sample in object my.data.frame
@@ -70,22 +72,18 @@ my.data.frame <- acled.api( # stores an ACLED sample in object my.data.frame
 #> Events were retrieved for the period starting 2019-06-01 until 2020-07-31.
 
 my.data.frame[1:3,] # returns the first three observations of the ACLED sample
-#>                      region     country year event_date
-#> 1 Caucasus and Central Asia Afghanistan 2020 2020-07-31
-#> 2 Caucasus and Central Asia  Azerbaijan 2020 2020-07-31
-#> 3 Caucasus and Central Asia Afghanistan 2020 2020-07-31
-#>                              source   admin1 admin2 admin3          location
-#> 1  Afghan Islamic Press News Agency   Ghazni  Andar                    Miray
-#> 2 Ministry of Defence of Azerbaijan Jabrayil               Chodjuk-Mardjanli
-#> 3  Afghan Islamic Press News Agency  Helmand Sangin                   Sangin
-#>                   event_type               sub_event_type interaction
-#> 1     Strategic developments Looting/property destruction          37
-#> 2                    Battles                  Armed clash          11
-#> 3 Violence against civilians                       Attack          37
-#>   fatalities  timestamp
-#> 1          0 1607974383
-#> 2          0 1596473349
-#> 3          1 1599503174
+#>        region country year event_date              source   admin1      admin2
+#> 1 Middle East  Israel 2020 2020-07-31 Black Flag Movement Tel Aviv    Tel Aviv
+#> 2  South Asia   India 2020 2020-07-31          Herald Goa      Goa   North Goa
+#> 3 Middle East  Israel 2020 2020-07-31 Black Flag Movement HaMerkaz Petah Tikva
+#>   admin3          location event_type   sub_event_type interaction fatalities
+#> 1        Mehlaf Alluf Sade   Protests Peaceful protest          60          0
+#> 2 Bardez         Calangute   Protests Peaceful protest          60          0
+#> 3                     Enat   Protests Peaceful protest          60          0
+#>    timestamp
+#> 1 1596472880
+#> 2 1596571063
+#> 3 1596472880
 ```
 
 ## A note on replicability
@@ -93,14 +91,14 @@ my.data.frame[1:3,] # returns the first three observations of the ACLED sample
 Some tasks, like real-time analyses and continuously updated forecasting
 models (e.g., as used by practitioners), may not require replicability
 of results. However, most research-related tasks assume the possibility
-of replication at a later stage (e.g., analyses of which the results are
-intended for publication, or a data project taking multiple days where a
-change to the underlying sample is not desirable). After the release of
-versions 1 through 8, ACLED changed their update system to allow for
-real-time amendments and post-release corrections, thereby forgoing
-traditional data versioning. This change requires researchers to take
-additional steps in order to ensure the replicability of their results
-when using ACLED data.
+of replication at a later stage (e.g., when results are intended for
+publication, or a data project taking multiple days where a change to
+the underlying sample is not desirable). After the release of versions 1
+through 8, ACLED changed their update system to allow for real-time
+amendments and post-release corrections, thereby forgoing traditional
+data versioning. This change requires researchers to take additional
+steps in order to ensure the replicability of their results when using
+ACLED data.
 
 Importantly, downloaded data intended for replicable use must be
 permanently stored by the analyst. Data downloaded through `acled.api()`

@@ -14,6 +14,7 @@ acled.api(
   add.variables = NULL,
   all.variables = FALSE,
   dyadic = FALSE,
+  interaction = NULL,
   other.query = NULL
 )
 }
@@ -47,6 +48,9 @@ argument add.variables).}
 
 \item{dyadic}{logical. When set to FALSE (default), monadic data is returned (one
 observation per event). If set to TRUE, dyadic data is returned.}
+
+\item{interaction}{numeric vector. Supply one or more interaction codes to narrow down which events should be
+retrieved (see \href{https://acleddata.com/resources/general-guides/}{ACLED's codebook} for details.}
 
 \item{other.query}{character vector. Allows users to add their own ACLED API queries to the
 GET call. Vector elements are assumed to be individual queries, and are automatically separated by an & sign.}
@@ -96,8 +100,9 @@ head(my.data.frame1)
 my.data.frame2 <- acled.api(email.address = Sys.getenv("EMAIL_ADDRESS"),
   access.key = Sys.getenv("ACCESS_KEY"),
   region = c(1,7),
-  start.date = "2020-11-01",
+  start.date = "2020-01-01",
   end.date = "2020-11-31",
+  interaction = c(10:18, 22:28),
   add.variables = c("geo_precision", "time_precision"))
 sd(my.data.frame2$geo_precision)
 }

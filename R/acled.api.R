@@ -30,6 +30,8 @@
 #' argument add.variables).
 #' @param dyadic logical. When set to FALSE (default), monadic data is returned (one
 #' observation per event). If set to TRUE, dyadic data is returned.
+#' @param interaction numeric vector. Supply one or more interaction codes to narrow down which events should be
+#' retrieved (see [ACLED's codebook](https://acleddata.com/resources/general-guides/) for details.
 #' @param other.query character vector. Allows users to add their own ACLED API queries to the
 #' GET call. Vector elements are assumed to be individual queries, and are automatically separated by an & sign.
 #' @details The function _`acled.api()`_ is an R wrapper for
@@ -68,8 +70,9 @@
 #' my.data.frame2 <- acled.api(email.address = Sys.getenv("EMAIL_ADDRESS"),
 #'   access.key = Sys.getenv("ACCESS_KEY"),
 #'   region = c(1,7),
-#'   start.date = "2020-11-01",
+#'   start.date = "2020-01-01",
 #'   end.date = "2020-11-31",
+#'   interaction = c(10:18, 22:28),
 #'   add.variables = c("geo_precision", "time_precision"))
 #' sd(my.data.frame2$geo_precision)
 #' }
@@ -85,6 +88,7 @@ acled.api <- function(
   add.variables = NULL,
   all.variables = FALSE,
   dyadic = FALSE,
+  interaction = NULL,
   other.query = NULL){
 
 
@@ -185,6 +189,19 @@ acled.api <- function(
         stop("The argument 'dyadic' requires a logical value.", call. = FALSE)
   }
 
+  # check interaction
+  if (!(is.numeric(interaction) | is.null(interaction))) {
+    stop("The 'interaction' argument requires a numeric value.")
+  } else if (!all(interaction %in% c(10:18, 20, 22:28, 30, 33:38, 40, 44:48, 50, 55:58, 60, 66, 68, 78, 80))) {
+    stop(paste0("At least one of the interaction codes supplied to the argument ",
+                "'interaction' does not match the original ACLED interaction codes.\n",
+                "Check the ACLED codebook for the correct codes."))
+  }
+
+  # interaction filter argument
+  interaction1 <- ifelse(is.null(interaction)==TRUE, "",
+                         paste0("&", paste0("interaction=", interaction, collapse = ":OR:")))
+
   # other.query argument
   other.query1 <- ifelse( is.null(other.query)==TRUE, "", paste0("&", paste(other.query, collapse = "&")) )
 
@@ -204,7 +221,7 @@ acled.api <- function(
 
   # GET call
   url <- paste0("https://api.acleddata.com/acled/read/?",
-                access.key1, email.address1, "&limit=0", dyadic1, time.frame1, variables, country1, region1, other.query1)
+                access.key1, email.address1, "&limit=0", dyadic1, time.frame1, variables, country1, region1, interaction1, other.query1)
 
   response <- httr::GET(url)
   if ( exists("response")==FALSE ) {
