@@ -1,9 +1,10 @@
-abca84d6388ac096bea295910ed0cf4c *DESCRIPTION
+f09196804d7d316237d3ad3154f4b44a *DESCRIPTION
 e8d73f784b60cd48e34bd7137afa2c06 *NAMESPACE
-2b62d5e670f0d8cdaf9e125efae8eb1e *NEWS.md
-b4d814affb1b1f8800f233797c4512f0 *R/acled.api.R
-e3b789b3a60f6fcf000cefd7aecda455 *R/acled.api.internal.R
-fe0086cd9ea3f15f5fcac9d1be8568a5 *README.md
-17553aa40e9ec677c0988f93399019bc *man/acled.api.Rd
+fbe5432a964e48665a4ee668665307b8 *NEWS.md
+42973e0db3275bea3bc58df6623f68e6 *R/acled.api.R
+1f439919dc958723f4d033b5a9cffdfe *R/acled.api.internal.R
+417e81bf531ebe2ddc91d09182bdc787 *R/supp.fun.R
+34de0f28c7e63a8ec8a03fb9da01a0ab *README.md
+72d08adf3bbe9d89029ceace4a315775 *man/acled.api.Rd
 0a821989f2eca143dcd07fe874db2773 *tests/testthat.R
-1d503f1fcd5a4b69c8b1b4db759cb0b2 *tests/testthat/test-acled.R
+6eaae2dc3bcbe7898d627ccfa87a58d6 *tests/testthat/test-acled.R

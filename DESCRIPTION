@@ -1,7 +1,7 @@
 Package: acled.api
 Title: Automated Retrieval of ACLED Conflict Event Data
-Version: 1.1.2
-Date: 2021-03-04
+Version: 1.1.3
+Date: 2021-03-25
 Authors@R: 
     c(person(given = "Christoph",
            family = "Dworschak",
@@ -18,11 +18,11 @@ Description: Access and manage the application programming interface (API) of th
 License: CC BY-NC 4.0
 Encoding: UTF-8
 Language: en-US
-LazyData: true
+LazyData: false
 RoxygenNote: 7.1.1
 Imports: httr, jsonlite
 Suggests: testthat
 NeedsCompilation: no
-Packaged: 2021-03-04 18:46:22 UTC; root
+Packaged: 2021-03-28 11:11:10 UTC; root
 Repository: CRAN
-Date/Publication: 2021-03-04 19:00:08 UTC
+Date/Publication: 2021-03-28 11:30:02 UTC
