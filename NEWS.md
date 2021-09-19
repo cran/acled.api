@@ -1,6 +1,14 @@
 
 # Release updates
 
+## alced.api version 1.1.4
+* Change of Maintainer email address to permanent address
+* Set up support function export for conveniently retrieving region names and codes 
+* Added test for get.api.regions()
+* 1 merge request by Rob Williams https://github.com/jayrobwilliams 
++ !4 More informative error messages (region & interaction mismatches)
+* Other slight revisions to warning messages
+
 
 ## alced.api version 1.1.3
 * Resized README example data retrieval
