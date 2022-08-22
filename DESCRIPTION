@@ -1,7 +1,7 @@
 Package: acled.api
 Title: Automated Retrieval of ACLED Conflict Event Data
-Version: 1.1.5
-Date: 2021-11-11
+Version: 1.1.6
+Date: 2022-08-19
 Authors@R: 
     c(person(given = "Christoph",
            family = "Dworschak",
@@ -19,10 +19,10 @@ URL: <https://gitlab.com/chris-dworschak/acled.api>
 License: CC BY-NC 4.0
 Encoding: UTF-8
 Language: en-US
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.1
 Imports: httr, jsonlite
 Suggests: testthat
 NeedsCompilation: no
-Packaged: 2021-11-12 08:43:56 UTC; root
+Packaged: 2022-08-22 07:50:51 UTC; root
 Repository: CRAN
-Date/Publication: 2021-11-12 09:00:02 UTC
+Date/Publication: 2022-08-22 08:50:02 UTC

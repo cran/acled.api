@@ -1,7 +1,7 @@
 #' @title Automated Retrieval of ACLED Conflict Event Data
 #' @name acled.api
-#' @description Access and manage the application programming
-#' interface (API) of the [Armed Conflict Location & Event Data Project (ACLED)](https://acleddata.com/).
+#' @description Access and manage the application programming interface (API)
+#' of the [Armed Conflict Location & Event Data Project (ACLED)](https://acleddata.com/).
 #' The function _`acled.api()`_ makes it easy to retrieve a user-defined sample (or all of the
 #' available data) of ACLED, enabling a seamless integration of regular data updates into
 #' the research work flow. If the data are intended for replicable use (e.g., later publication of analysis results), the
@@ -52,7 +52,7 @@
 #' @return A data frame containing ACLED events.
 #' @import jsonlite
 #' @import httr
-#' @author Christoph Dworschak \cr Website: \href{https://www.chrisdworschak.com/}{<https://chrisdworschak.com/>}
+#' @author Christoph Dworschak \cr Website: \url{https://www.chrisdworschak.com/}
 #' @references Armed Conflict Location & Event Data Project (ACLED); <https://acleddata.com/> \cr
 #' Clionadh Raleigh, Andrew Linke, Havard Hegre and Joakim Karlsen. 2010.
 #' "Introducing ACLED-Armed Conflict Location and Event Data." _Journal of Peace Research_ 47 (5): 651-660.
