@@ -53,42 +53,64 @@ between June 2019 and July 2020, you can supply:
 ``` r
 library(acled.api) # loads the package
 #> 
-#> By using this package, you acknowledge that you have read ACLED's terms and
-#> conditions. The data must be cited as per ACLED attribution requirements. To
-#> download ACLED data, you require an ACLED access key. You can request your key
-#> by freely registering with ACLED on https://developer.acleddata.com/.
+#>  Before using this package to download data, you require an ACLED access key.
+#> You can request your key by registering with ACLED on https://developer.acleddata.com/.
 #> The package may be cited as:
 #> Dworschak, Christoph. 2020. "Acled.api: Automated Retrieval of ACLED Conflict
-#> Event Data." R package. CRAN version 1.1.5.
+#> Event Data." R package. CRAN version 1.1.8.
 #> For the development version of this package, visit <https://gitlab.com/chris-dworschak/acled.api/>
 
 my.data.frame <- acled.api( # stores an ACLED sample in object my.data.frame
-  email.address = Sys.getenv("EMAIL_ADDRESS"),
-  access.key = Sys.getenv("ACCESS_KEY"),
+  email.address = Sys.getenv("ACLED_EMAIL_ADDRESS"),
+  access.key = Sys.getenv("ACLED_ACCESS_KEY"),
   region = c("South Asia", "Central America"), 
   start.date = "2019-09-01", 
   end.date = "2020-01-31")
-#> GET request wasn't successful. The API returned status 403: You must confirm you have read and understood the latest terms of use.
+#> Your ACLED data request was successful. 
+#> Events were retrieved for the period starting 2019-09-01 until 2020-01-31.
 
 my.data.frame[1:5,] # returns the first three observations of the ACLED sample
-#> NULL
+#>   event_id_cnty          region   country year event_date
+#> 1       HND1343 Central America  Honduras 2020 2020-01-31
+#> 2       GTM2921 Central America Guatemala 2020 2020-01-31
+#> 3      IND70618      South Asia     India 2020 2020-01-31
+#> 4      IND70620      South Asia     India 2020 2020-01-31
+#> 5      IND70609      South Asia     India 2020 2020-01-31
+#>                                       source        admin1      admin2
+#> 1                            Proceso Digital        Cortes     La Lima
+#> 2 Dialogos - Observatorio sobre la Violencia Huehuetenango La Libertad
+#> 3                   Asian News International         Bihar       Patna
+#> 4                            Hindustan Times   Maharashtra        Pune
+#> 5                            Hindustan Times         Bihar      Kaimur
+#>       admin3      location latitude longitude                 event_type
+#> 1    La Lima       La Lima  15.4333  -87.9167 Violence against civilians
+#> 2            Camoja Grande  15.5823  -91.9006 Violence against civilians
+#> 3 Sampatchak         Patna  25.5941   85.1356                   Protests
+#> 4  Pune City          Pune  18.5195   73.8553                   Protests
+#> 5     Bhabua        Bhabua  25.0404   83.6074                    Battles
+#>     sub_event_type interaction fatalities                 tags  timestamp
+#> 1           Attack          37          1                      1618511533
+#> 2           Attack          37          1                      1618511538
+#> 3 Peaceful protest          60          0 crowd size=no report 1649276878
+#> 4 Peaceful protest          60          0 crowd size=no report 1649276878
+#> 5      Armed clash          44          0                      1649276878
 ```
 
 ## A note on replicability
 
-Some tasks, like real-time analyses and continuously updated forecasting
-models (e.g., as used by practitioners), may not require replicability
-of results. However, most research-related tasks assume the possibility
-of replication at a later stage (e.g., when results are intended for
-publication, or a data project taking multiple days where a change to
-the underlying sample is not desirable). After the release of versions 1
-through 8, ACLED changed their update system to allow for real-time
-amendments and post-release corrections, thereby forgoing traditional
-data versioning. This change requires researchers to take additional
-steps in order to ensure the replicability of their results when using
-ACLED data.
+After the release of versions 1 through 8, ACLED changed their update
+system to allow for real-time amendments and post-release corrections,
+thereby forgoing traditional data versioning. This change requires
+researchers to take additional steps in order to ensure the
+replicability of their results when using ACLED data. Some tasks, like
+real-time forecasting models used by practitioners, may not require
+replicability of intermediate results. However, most research-related
+tasks assume the possibility of replication at a later stage. This is
+especially the case for results that are intended for publication, or
+for an ongoing data project where constant changes to the underlying
+sample are not desirable.
 
-Importantly, downloaded data intended for replicable use must be
+To this end, downloaded data intended for replicable use must be
 permanently stored by the analyst. Data downloaded through `acled.api()`
 are only stored temporarily in the working space, and may be lost after
 closing R. Therefore, if replicability is important to the analyst’s
@@ -99,9 +121,10 @@ stored data file can then be used again at a later point by calling
 `readRDS(file = "my_acled_data.rds")`, and ensures that the analysis
 sample stays constant over time.
 
-ACLED provides a time stamp for each individual observation, enabling
-researchers to do “micro versioning” of data points if necessary, and to
-verify congruence across samples. For this it is important that
-researchers do not drop the variable *timestamp* during the data
-management process. Starting version 1.0.9 the function `acled.api()`
-includes the *timestamp* variable in its default API call.
+ACLED provides a time stamp for each individual observation (column
+*timestamp*), enabling researchers to do “micro versioning” of data
+points if necessary, and to verify congruence across samples. Starting
+from version 1.0.9, the function `acled.api()` includes the *timestamp*
+variable in its default API call. More recently, ACLED also introduced a
+discussion of data versioning in its [API
+Guide](https://apidocs.acleddata.com/).
